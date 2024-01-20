@@ -1,0 +1,172 @@
+#!/bin/sh
+
+PROGRAM="$(basename "$0")"
+JPROGRAM="${JULIABIN}/morseFit.jl"
+
+usage() {
+
+    cat <<help
+
+$PROGRAM
+
+    Wrapper for my julia script located at : ${JPROGRAM}
+
+    usage: ${PROGRAM} [operation] [operand]
+
+    operations:               operand:        function:
+
+        -h                    none            show this message.
+        -i,--input            file            specify input  file
+        -o,--output           file            specify output file
+        --tailonly            none            if specified, only fit the tail of the potentil
+        --rcut                float           cutoff   distance for fitting only the potential tail
+        --rmin                float           smallest distance for the fit. Ignored if --tailonly is supplied
+        --rmax                float           largest  distance for the fit
+        --rstep               float           linear step size  for the fit
+        --printparams         none            if specified, print the fit parameters
+
+    The following is a valid implementation of ${PROGRAM} :
+
+        ${PROGRAM} -i data_to_convolve.dat -o convolved_data.dat --dx=1.3e-3 --nx=1000 --logx
+
+help
+}
+
+die() {
+
+  exit_code=1
+  error_message="$1"
+
+  echo  1>&2
+	echo "${PROGRAM}: ${error_message}" 1>&2
+  echo  1>&2
+
+  usage
+
+  exit "${exit_code}"
+
+}
+
+lowercase() {
+  echo "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+main() {
+
+  tailOnly="false"
+  printparams="false"
+
+	while :; do
+		case $1 in
+			-h|-\?|--help)
+				usage
+				exit 0
+				;;
+
+			-i | --input)
+				[ "$2" ] && input="${2}" && shift || die 'ERROR: "--input" requires a non-empty option argument.'
+				;;
+			-i= | --input=)
+				die 'ERROR: "--input" requires a non-empty argument.'
+				;;
+			-i=?* | --input=?*)
+				input="${1#*=}"
+				;;
+
+			-o | --output)
+				[ "$2" ] && output="${2}" && shift || die 'ERROR: "--output" requires a non-empty option argument.'
+				;;
+			-o= | --output=)
+				die 'ERROR: "--output" requires a non-empty argument.'
+				;;
+			-o=?* | --output=?*)
+				output="${1#*=}"
+				;;
+
+			--rcut)
+				[ "$2" ] && rcut="${2}" && shift || die 'ERROR: "--rcut" requires a non-empty option argument.'
+				;;
+			--rcut=)
+				die 'ERROR: "--rcut" requires a non-empty argument.'
+				;;
+			--rcut=?*)
+				rcut="${1#*=}"
+				;;
+
+			--rmin)
+				[ "$2" ] && rmin="${2}" && shift || die 'ERROR: "--rcut" requires a non-empty option argument.'
+				;;
+			--rmin=)
+				die 'ERROR: "--rmin" requires a non-empty argument.'
+				;;
+			--rmin=?*)
+				rmin="${1#*=}"
+				;;
+
+			--rmax)
+				[ "$2" ] && rmax="${2}" && shift || die 'ERROR: "--rcut" requires a non-empty option argument.'
+				;;
+			--rmax=)
+				die 'ERROR: "--rmax" requires a non-empty argument.'
+				;;
+			--rmax=?*)
+				rmax="${1#*=}"
+				;;
+
+			--rstep)
+				[ "$2" ] && rstep="${2}" && shift || die 'ERROR: "--rcut" requires a non-empty option argument.'
+				;;
+			--rstep=)
+				die 'ERROR: "--rstep" requires a non-empty argument.'
+				;;
+			--rstep=?*)
+				rstep="${1#*=}"
+				;;
+
+      --tailonly)
+        tailOnly="true"
+        ;;
+
+      --printparams)
+        printparams="true"
+        ;;
+
+			--)
+				shift
+				break
+				;;
+
+			-?*)
+				printf 'WARN: Unknown option (ignored): %s\n' "${1}"
+				;;
+
+      *)
+        break
+        ;;
+
+			esac
+			shift
+
+	done
+
+  flag=false
+  [ -z "${input}" ] && echo "Need an input file (--input)" 1>&2 && flag=true
+  [ -r "${input}" ] || (echo "Input file""'""$input""'"" does not exist or cannot be read" 1>&2 && flag=true)
+  [ -z "${output}" ] && echo "Need an output file (--output)" 1>&2 && flag=true
+  [ -z "${rmax}" ] && echo "Need a maximum distance (--rmax)" 1>&2 && flag=true
+  [ -z "${rstep}" ] && echo "Need a step size (--rstep)" 1>&2 && flag=true
+  [ -w "${input}" ] || (echo "Output file""'""$output""'"" does not exist or cannot be written to" 1>&2 && flag=true)
+  if [ "${tailOnly}" == "true" ] ; then
+    [ -z "${rcut}" ] && echo "Need to provide a cutoff distance (--rcut) if you only want to fit the potential tail" && flag=true
+    rmin=0.0
+  else
+    [ -z "${rmin}" ] && echo "Need to provide a minimum distance (--rmin) if you want to fit the whole potential" && flag=true
+    rcut=0.0
+  fi
+  $flag && die "Variable(s) not defined. See above ^^^"
+
+  julia "$JPROGRAM" "$input" "$output" "$tailOnly" "$rcut" "$rmin" "$rmax" "$rstep" "$printparams"
+
+}
+
+main "$@"
