@@ -3,6 +3,14 @@
 PROGRAM="$(basename "$0")"
 JPROGRAM="${JULIABIN}/morseFit.jl"
 
+@@@@@@@@@@@@@@@@@@@@@
+@ provide initial guesses of the parameters
+@ one big wrapper script, or one for each ??
+@ one for each sounds better, but we can have a big  ol julia script for everything
+@@
+@ idk, maybe one big old script too like --fit-potential=Morse
+@@@@@@@@@@@@@@@@@@@@@
+
 usage() {
 
     cat <<help

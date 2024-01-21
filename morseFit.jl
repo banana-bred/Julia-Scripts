@@ -75,9 +75,7 @@ function main(
 
     fit = curve_fit(Morse, x, y, c)
 
-    if tailOnly
-        rMin = last(x)
-    end #if
+    if (tailOnly) rMin = last(x) end
 
     xfit = [r for r in rMin:rStep:rMax]
     yfit = Morse(xfit, fit.param)
@@ -89,9 +87,7 @@ function main(
 
     writedlm(outfile, [xfit yfit])
 
-    if printParams
-        println("a, r0, D, dissociationLimit  = ",  fit.param)
-    end # if
+    if (printParams) println("a, r0, D, dissociationLimit  = ",  fit.param) end
 
 end
 
