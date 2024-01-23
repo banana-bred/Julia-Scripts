@@ -3,21 +3,13 @@
 PROGRAM="$(basename "$0")"
 JPROGRAM="${JULIABIN}/morseFit.jl"
 
-@@@@@@@@@@@@@@@@@@@@@
-@ provide initial guesses of the parameters
-@ one big wrapper script, or one for each ??
-@ one for each sounds better, but we can have a big  ol julia script for everything
-@@
-@ idk, maybe one big old script too like --fit-potential=Morse
-@@@@@@@@@@@@@@@@@@@@@
-
 usage() {
 
     cat <<help
 
 $PROGRAM
 
-    Wrapper for my julia script located at : ${JPROGRAM}
+    Wrapper for my julia script located at ${JPROGRAM} (\$JPROGRAM)
 
     usage: ${PROGRAM} [operation] [operand]
 
@@ -27,11 +19,16 @@ $PROGRAM
         -i,--input            file            specify input  file
         -o,--output           file            specify output file
         --tailonly            none            if specified, only fit the tail of the potentil
-        --rcut                float           cutoff   distance for fitting only the potential tail
-        --rmin                float           smallest distance for the fit. Ignored if --tailonly is supplied
-        --rmax                float           largest  distance for the fit
-        --rstep               float           linear step size  for the fit
-        --printparams         none            if specified, print the fit parameters
+        --rcut                number          cutoff   distance for fitting only the potential tail
+        --rmin                number          smallest distance for the fit. Ignored if --tailonly is supplied
+        --rmax                number          largest  distance for the fit
+        --rstep               number          linear step size  for the fit
+        -a                    number          initial guess for the `a` parameter in the Morse potetial controlling the well width
+        -D                    number          initial guess for the `D` parameter in the Morse potetial controlling the well depth
+        --dissociation-limit  number          initial guess for the absolute value of the the dissociation limit of the potential
+        --dissociation-sign   (p|n)           the sign of the dissociation limit guess. p (>0) or n(<0)
+        --print-parameters    none            if specified, print the fit parameters
+
 
     The following is a valid implementation of ${PROGRAM} :
 
@@ -61,6 +58,10 @@ lowercase() {
 
 main() {
 
+  a=0.5
+  D=0.5
+  dissociationLimit=0.5
+  dissociationSign="p"
   tailOnly="false"
   printparams="false"
 
@@ -122,7 +123,7 @@ main() {
 				;;
 
 			--rstep)
-				[ "$2" ] && rstep="${2}" && shift || die 'ERROR: "--rcut" requires a non-empty option argument.'
+				[ "$2" ] && rstep="${2}" && shift || die 'ERROR: "--rstep" requires a non-empty option argument.'
 				;;
 			--rstep=)
 				die 'ERROR: "--rstep" requires a non-empty argument.'
@@ -131,11 +132,51 @@ main() {
 				rstep="${1#*=}"
 				;;
 
+			--dissociation-limit)
+				[ "$2" ] && dissociationLimit="${2}" && shift || die 'ERROR: "--dissociation-limit" requires a non-empty option argument.'
+				;;
+			--dissociation-limit=)
+				die 'ERROR: "--dissociation-limit" requires a non-empty argument.'
+				;;
+			--dissociationLimit=?*)
+				dissociationLimit="${1#*=}"
+				;;
+
+			--dissociation-sign)
+				[ "$2" ] && dissociationSign="${2}" && shift || die 'ERROR: "--dissociation-sign" requires a non-empty option argument.'
+				;;
+			--dissociation-sign=)
+				die 'ERROR: "--dissociation-sign" requires a non-empty argument.'
+				;;
+			--dissociationSign=?*)
+				dissociationSign="${1#*=}"
+				;;
+
+			-a)
+				[ "$2" ] && a="${2}" && shift || die 'ERROR: "-a" requires a non-empty option argument.'
+				;;
+			-a=)
+				die 'ERROR: "-a" requires a non-empty argument.'
+				;;
+			-a=?*)
+				a="${1#*=}"
+				;;
+
+			-D)
+				[ "$2" ] && D="${2}" && shift || die 'ERROR: "-D" requires a non-empty option argument.'
+				;;
+			-D=)
+				die 'ERROR: "-D" requires a non-empty argument.'
+				;;
+			-D=?*)
+				D="${1#*=}"
+				;;
+
       --tailonly)
         tailOnly="true"
         ;;
 
-      --printparams)
+      --print-parameters)
         printparams="true"
         ;;
 
@@ -173,7 +214,9 @@ main() {
   fi
   $flag && die "Variable(s) not defined. See above ^^^"
 
-  julia "$JPROGRAM" "$input" "$output" "$tailOnly" "$rcut" "$rmin" "$rmax" "$rstep" "$printparams"
+  [ "${dissociationSign}" == "n" ] && dissociationLimit="-$dissociationLimit"
+
+  julia "$JPROGRAM" "$input" "$output" "$tailOnly" "$rcut" "$rmin" "$rmax" "$rstep" "$a" "$D" "$dissociationLimit" "$printparams"
 
 }
 
