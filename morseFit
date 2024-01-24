@@ -13,26 +13,27 @@ $PROGRAM
 
     usage: ${PROGRAM} [operation] [operand]
 
-    operations:               operand:        function:
+    operations:                 operand:        function:
 
-        -h                    none            show this message.
-        -i,--input            file            specify input  file
-        -o,--output           file            specify output file
-        --tailonly            none            if specified, only fit the tail of the potentil
-        --rcut                number          cutoff   distance for fitting only the potential tail
-        --rmin                number          smallest distance for the fit. Ignored if --tailonly is supplied
-        --rmax                number          largest  distance for the fit
-        --rstep               number          linear step size  for the fit
-        -a                    number          initial guess for the `a` parameter in the Morse potetial controlling the well width
-        -D                    number          initial guess for the `D` parameter in the Morse potetial controlling the well depth
-        --dissociation-limit  number          initial guess for the absolute value of the the dissociation limit of the potential
-        --dissociation-sign   (p|n)           the sign of the dissociation limit guess. p (>0) or n(<0)
-        --print-parameters    none            if specified, print the fit parameters
+        -h                      none            show this message.
+        -i,--input              file            specify input  file
+        -o,--output             file            specify output file
+        --tailonly              none            if specified, only fit the tail of the potentil
+        --rcut                  number          cutoff   distance for fitting only the potential tail
+        --rmin                  number          smallest distance for the fit. Ignored if --tailonly is supplied
+        --rmax                  number          largest  distance for the fit
+        --rstep                 number          linear step size  for the fit
+        -a                      number          initial guess for the 'a'  parameter in the Morse potetial controlling the well width
+        -r0                     number          initial guess for the 'r0' parameter in the Morse potetial controlling the location of the well minimum
+        -D                      number          initial guess for the 'D'  parameter in the Morse potetial controlling the well depth
+        --dissociation-limit    number          initial guess for the absolute value of the the dissociation limit (assumed to be negative) of the potential.
+        --positive-dissoc-limit none            if specified, the dissociation limit is taken to have a positive value
+        --print-parameters      none            if specified, print the fit parameters
 
 
     The following is a valid implementation of ${PROGRAM} :
 
-        ${PROGRAM} -i data_to_convolve.dat -o convolved_data.dat --dx=1.3e-3 --nx=1000 --logx
+        ${PROGRAM} -i input.dat -o output.dat --tailonly --rcut=2.6 --rstep=0.01 --dissociation-limit 75 --positive-dissoc-limit
 
 help
 }
@@ -59,9 +60,10 @@ lowercase() {
 main() {
 
   a=0.5
+  r0=0.5
   D=0.5
   dissociationLimit=0.5
-  dissociationSign="p"
+  flipDissoc="true"
   tailOnly="false"
   printparams="false"
 
@@ -142,16 +144,6 @@ main() {
 				dissociationLimit="${1#*=}"
 				;;
 
-			--dissociation-sign)
-				[ "$2" ] && dissociationSign="${2}" && shift || die 'ERROR: "--dissociation-sign" requires a non-empty option argument.'
-				;;
-			--dissociation-sign=)
-				die 'ERROR: "--dissociation-sign" requires a non-empty argument.'
-				;;
-			--dissociationSign=?*)
-				dissociationSign="${1#*=}"
-				;;
-
 			-a)
 				[ "$2" ] && a="${2}" && shift || die 'ERROR: "-a" requires a non-empty option argument.'
 				;;
@@ -174,6 +166,10 @@ main() {
 
       --tailonly)
         tailOnly="true"
+        ;;
+
+      --positive-dissoc-limit)
+        flipDissoc="false"
         ;;
 
       --print-parameters)
@@ -214,9 +210,9 @@ main() {
   fi
   $flag && die "Variable(s) not defined. See above ^^^"
 
-  [ "${dissociationSign}" == "n" ] && dissociationLimit="-$dissociationLimit"
+  [ "${flipDissoc}" == "true" ] && dissociationLimit="-$dissociationLimit"
 
-  julia "$JPROGRAM" "$input" "$output" "$tailOnly" "$rcut" "$rmin" "$rmax" "$rstep" "$a" "$D" "$dissociationLimit" "$printparams"
+  julia "$JPROGRAM" "$input" "$output" "$tailOnly" "$rcut" "$rmin" "$rmax" "$rstep" "$a" "$r0" "$D"  "$dissociationLimit" "$printparams"
 
 }
 

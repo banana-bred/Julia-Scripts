@@ -46,6 +46,7 @@ function main(
         rMax        :: Float64,
         rStep       :: Float64,
         a           :: Number,
+        r0          :: Number,
         D           :: Number,
         diss        :: Number,
         printParams :: Bool
@@ -65,9 +66,7 @@ function main(
          y = ydata
     end
 
-    rmin = x[argmin(y)]
-
-    c = [a, rmin, D, diss]
+    c = [a, r0, D, diss]
 
     fit = curve_fit(Morse, x, y, c)
 
@@ -107,8 +106,9 @@ rMin        = parse(Float64, ARGS[5])  # -- smallest distance for theARGS[5] fit
 rMax        = parse(Float64, ARGS[6])  # -- largest  distance for theARGS[6] fit
 rStep       = parse(Float64, ARGS[7])  # -- linear step size for the ARGS[7]fit
 a           = parse(Float64, ARGS[8])  # -- potential width
-D           = parse(Float64, ARGS[9])  # -- well depth
-diss        = parse(Float64, ARGS[10]) # -- dissociation limit
-printParams = parse(Bool, ARGS[11])    # -- (T) print the optimized potential parameters (F) don't
+r0          = parse(Float64, ARGS[9])  # -- well depth
+D           = parse(Float64, ARGS[10]) # -- well minimum
+diss        = parse(Float64, ARGS[11]) # -- dissociation limit
+printParams = parse(Bool, ARGS[12])    # -- (T) print the optimized potential parameters (F) don't
 
-main(infile, outfile, tailOnly, rCutoff, rMin, rMax, rStep, a, D, diss, printParams)
+main(infile, outfile, tailOnly, rCutoff, rMin, rMax, rStep, a, r0, D, diss, printParams)
