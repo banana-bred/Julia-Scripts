@@ -10,7 +10,9 @@ Each wrapper script looks for its Julia script in the folder given by the enviro
 Inline math test $\sigma = \sim 7$
 
 Display test
-$$ \alpha \to \sigma $$
+```math
+\alpha \to \sigma
+```
 
 ### Convolve scattering cross sections with a Maxwell-Boltzmann distribution
 ...
