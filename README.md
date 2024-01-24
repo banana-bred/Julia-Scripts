@@ -34,7 +34,8 @@ Cross sections $f(x)$ can be convolved with this distribution:
 ```
 In implementation, the upper integration limit is taken to be the last available value of $x$.
 This should not be an issue if the Gaussian width, $\gamma$, is small enough compared to this.
-
+The lower limit, 0, may not be in the domain of $f$ or may not return a desirable value.
+...
 
 
 
