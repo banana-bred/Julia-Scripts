@@ -238,5 +238,5 @@ For a tail fit:
 ## References
 <a id="1">[1]</a>
 Forer, J. et. al. (2023)
-*Kinetic rate coefficients for electron-driven collisions with CH$^+$: dissociative recombination and rovibronic excitation.*
+*Kinetic rate coefficients for electron-driven collisions with CH<sup>+</sup>: dissociative recombination and rovibronic excitation.*
 Monthly Notices of the Royal Astronomical Society 527, 5238-5234
