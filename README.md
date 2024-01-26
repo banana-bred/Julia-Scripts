@@ -5,7 +5,7 @@ The shell scripts all use the environmental variable JPROGRAM to find the julia 
 
 ## Convolving data with a Gaussian or Cauchy (Lorentz) distribution
 
-For two functions $f, g : [0, \infty) \to \mathbb{R}, we can define their convolution as
+For two functions $f, g : [0, \infty) \to \mathbb{R}$, we can define their convolution as
 ```math
 (f*g)(x) \equiv \int\limits_{-\infty}^{\infty} f(x')g(x-x')dx'
 ```
@@ -40,7 +40,7 @@ In implementation, the normalization factor $\int\limits_{0}^{\infty} dx' e^{-(x
 
 ### The Cauchy (Lorentz) Distribution
 
-The Cauchy --- or Lorentz --- distribution is given by
+The Cauchy — or Lorentz — distribution is given by
 ```math
     f \frac{\pi}{\gamma}
     ((x - x')^2 + \gamma^2) ^ {-1}
@@ -85,7 +85,7 @@ convolve
 
 In the situation where we have scattering cross sections (electron-atom or electron-molecule) as a function of collision energy and want to obtain thermally averaged rate coefficients as a fucntion of the kinetic temperature, the script `thermal` can be used.
 Just as above, this reduces to convolving a function $f(x)$ with a function $g(x)$.
-Here, the function $f$ is assumed to be the function $\sigma(E)$ --- a scattering cross section as a function of collision energy (E).
+Here, the function $f$ is assumed to be the function $\sigma(E)$ — a scattering cross section as a function of collision energy (E).
 The function $\sigma(E)$ is zero for negative $E$, but may be zero or undefined at $E=0$.
 In practice, the value $E=0$ is approached but not passed exactly.
 Some cross sections are 0 at threshold ($E=0$), while others behave as $1/E$.
