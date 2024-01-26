@@ -192,7 +192,7 @@ where $r$ is a separation distance, $D_{e}$ is the well depth with respect to th
 
 ### Implementation
 
-The scripts take as input a file containing space separated x (r), y (V(r)) data.
+The scripts take as input a file containing space separated x ($r$), y ($V(r)$) data.
 A fit can be generate of all of the data or only a part of the data for $r > r_{min}$.
 This is useful for fitting only the tail of the data.
 The optimized parameters (using the method of least squares) can then be used to generate data over a user-defined range of $r$ values.
