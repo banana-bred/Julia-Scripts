@@ -5,7 +5,7 @@ The shell scripts all use the environmental variable JPROGRAM to find the julia 
 
 ## Convolving data with a Gaussian or Cauchy (Lorentz) distribution
 
-For two functions $f, g : [0, \infty) \to \mathbb{R}$, we can define their convolution as
+For two functions $f, g : \mathbb{R} \to \mathbb{R}$, we can define their convolution as
 ```math
 (f*g)(x) \equiv \int\limits_{-\infty}^{\infty} f(x')g(x-x')dx'
 ```
@@ -43,7 +43,7 @@ In implementation, the normalization factor $\int\limits_{0}^{\infty} dx' e^{-(x
 The Cauchy — or Lorentz — distribution is given by
 ```math
     f \frac{\pi}{\gamma}
-    ((x - x')^2 + \gamma^2) ^ {-1}
+    \left[(x - x')^2 + \gamma^2\right] ^ {-1}
 ```
 where $\gamma$ is is the distribution width.
 
@@ -238,5 +238,5 @@ For a tail fit:
 ## References
 <a id="1">[1]</a>
 Forer, J. et. al. (2023)
-Kinetic rate coefficients for electron-driven collisions with CH$^+$: dissociative recombination and rovibronic excitation.
+*Kinetic rate coefficients for electron-driven collisions with CH``^+``: dissociative recombination and rovibronic excitation.*
 Monthly Notices of the Royal Astronomical Society 527, 5238-5234
