@@ -1,7 +1,7 @@
 # Julia-Scripts
 
 A small collection of Julia utility scripts and their associated wrappers that I use.
-The shell scripts all use the environmental variable JPROGRAM to find the julia scripts, so make sure these are in a location given by the directory to which you set JPROGRAM.
+The shell scripts all use the environmental variable JULIABIN to find the julia scripts, so make sure these are in a location given by the directory to which you set JULIABIN.
 
 ## Convolving data with a Gaussian or Cauchy (Lorentz) distribution
 
@@ -61,7 +61,7 @@ Script arguments
 
     convolve
 
-        Wrapper for my julia script located at : \$JPROGRAM
+        Wrapper for my julia script located at : \$JULIABIN
 
         usage: convolve [operation] [operand]
 
@@ -124,7 +124,7 @@ This script requires my script `units` ([https://github.com/banana-bred/units](h
 
     thermal
 
-        Wrapper for my julia script (\$JPROGRAM), which produces state-selected
+        Wrapper for my julia script (\$JULIABIN), which produces state-selected
         kinetic rate coefficients from cross sections behaving as 1/E (E being electron energy)
         at the E=0 threshold.
 
@@ -203,7 +203,7 @@ A decent guess for $E_{\text{diss}}$ should be supplied, otherwise the least squ
 
     morseFit
 
-        Wrapper for my julia script located at (\$JPROGRAM)
+        Wrapper for my julia script located at (\$JULIABIN)
 
         usage: morseFit [operation] [operand]
 

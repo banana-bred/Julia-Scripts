@@ -9,7 +9,7 @@ usage() {
 
 $PROGRAM
 
-    Wrapper for my julia script located at ${JPROGRAM} (\$JPROGRAM)
+    Wrapper for my julia script located at ${JPROGRAM} (\$JULIABIN)
 
     usage: ${PROGRAM} [operation] [operand]
 
@@ -18,7 +18,8 @@ $PROGRAM
         -h                      none            show this message.
         -i,--input              file            specify input  file
         -o,--output             file            specify output file
-        --tailonly              none            if specified, only fit the tail of the potentil
+        --tailonly              none            if specified, only fit the tail (large r) of the potential
+        --headonly              none            if specified, only fit the head (small r) of the potential
         --rcut                  number          cutoff   distance for fitting only the potential tail
         --rmin                  number          smallest distance for the fit. Ignored if --tailonly is supplied
         --rmax                  number          largest  distance for the fit
@@ -65,6 +66,7 @@ main() {
   dissociationLimit=0.5
   flipDissoc="true"
   tailOnly="false"
+  headOnly="false"
   printparams="false"
 
 	while :; do
@@ -168,6 +170,10 @@ main() {
         tailOnly="true"
         ;;
 
+      --headonly)
+        headOnly="true"
+        ;;
+
       --positive-dissoc-limit)
         flipDissoc="false"
         ;;
@@ -195,24 +201,39 @@ main() {
 	done
 
   flag=false
+
   [ -z "${input}" ] && echo "Need an input file (--input)" 1>&2 && flag=true
   [ -r "${input}" ] || (echo "Input file""'""$input""'"" does not exist or cannot be read" 1>&2 && flag=true)
   [ -z "${output}" ] && echo "Need an output file (--output)" 1>&2 && flag=true
-  [ -z "${rmax}" ] && echo "Need a maximum distance (--rmax)" 1>&2 && flag=true
   [ -z "${rstep}" ] && echo "Need a step size (--rstep)" 1>&2 && flag=true
   [ -w "${input}" ] || (echo "Output file""'""$output""'"" does not exist or cannot be written to" 1>&2 && flag=true)
+
   if [ "${tailOnly}" == "true" ] ; then
+
+    [ "${headOnly}" == "true" ] && echo "--headonly and --tailonly cannot both be supplied" && flag=true
     [ -z "${rcut}" ] && echo "Need to provide a cutoff distance (--rcut) if you only want to fit the potential tail" && flag=true
+    [ -z "${rmax}" ] && echo "Need a maximum distance (--rmax)" 1>&2 && flag=true
     rmin=0.0
-  else
+
+  elif [ "${headOnly}" == "true" ] ; then
+
+    [ -z "${rcut}" ] && echo "Need to provide a cutoff distance (--rcut) if you only want to fit the potential tail" && flag=true
     [ -z "${rmin}" ] && echo "Need to provide a minimum distance (--rmin) if you want to fit the whole potential" && flag=true
+    rmax=0.0
+
+  else
+
+    [ -z "${rmin}" ] && echo "Need to provide a minimum distance (--rmin) if you want to fit the whole potential" && flag=true
+    [ -z "${rmax}" ] && echo "Need a maximum distance (--rmax)" 1>&2 && flag=true
     rcut=0.0
+
   fi
-  $flag && die "Variable(s) not defined. See above ^^^"
+
+  $flag && die "Errors encountered. See above ^^^"
 
   [ "${flipDissoc}" == "true" ] && dissociationLimit="-$dissociationLimit"
 
-  julia "$JPROGRAM" "$input" "$output" "$tailOnly" "$rcut" "$rmin" "$rmax" "$rstep" "$a" "$r0" "$D"  "$dissociationLimit" "$printparams"
+  julia "$JPROGRAM" "$input" "$output" "$headOnly" "$tailOnly" "$rcut" "$rmin" "$rmax" "$rstep" "$a" "$r0" "$D"  "$dissociationLimit" "$printparams"
 
 }
 
