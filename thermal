@@ -9,7 +9,7 @@ usage() {
 
 $PROGRAM
 
-    Wrapper for my julia script (${JPROGRAM}), which produces state-selected
+    Wrapper for my julia script $PROGRAM (\${JPROGRAM}), which produces state-selected
     kinetic rate coefficients from cross sections behaving as 1/E (E being electron energy)
     at the E=0 threshold.
 

@@ -33,7 +33,7 @@ $PROGRAM
 
     The following is a valid implementation of ${PROGRAM} :
 
-        ${PROGRAM} -i input.dat -o output.dat --tailonly --rcut=2.6 --rstep=0.01 --dissociation-limit 75 --positive-dissoc-limit
+        ${PROGRAM} -i input.dat -o output.dat --tailonly --rcut=2.6 --rstep=0.01 --rmax=10 --dissociation-limit 75 --positive-dissoc-limit
 
 help
 }
