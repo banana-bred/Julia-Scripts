@@ -59,25 +59,25 @@ Script arguments
 
 ### Using `convolve`
 
-convolve
+    convolve
 
-    Wrapper for my julia script located at : \$JPROGRAM
+        Wrapper for my julia script located at : \$JPROGRAM
 
-    usage: convolve [operation] [operand]
+        usage: convolve [operation] [operand]
 
-    operations:               operand:        function:
+        operations:               operand:        function:
 
-        -h                    none            show this message.
-        -i,--input            file            specify input  file
-        -o,--output           file            specify output file
-        --dx,--width          float           specify gaussian width
-        --nx                  integer         number of convolution x-grid points
-        --logx                none            if supplied, a logarithmic grid will be used.
-        -t, --ct, --convtype  (gauss|cauchy)  determines convolution function
+            -h                    none            show this message.
+            -i,--input            file            specify input  file
+            -o,--output           file            specify output file
+            --dx,--width          float           specify gaussian width
+            --nx                  integer         number of convolution x-grid points
+            --logx                none            if supplied, a logarithmic grid will be used.
+            -t, --ct, --convtype  (gauss|cauchy)  determines convolution function
 
-    The following is a valid implementation of convolve :
+        The following is a valid implementation of convolve :
 
-        convolve -i data_to_convolve.dat -o convolved_data.dat --dx=1.3e-3 --nx=1000 --logx
+            convolve -i data_to_convolve.dat -o convolved_data.dat --dx=1.3e-3 --nx=1000 --logx
 
 
 
@@ -122,58 +122,58 @@ See the following for more detail on the usage.
 
 This script requires my script `units` ([https://github.com/banana-bred/units](https://github.com/banana-bred/units)).
 
-thermal
+    thermal
 
-    Wrapper for my julia script (\$JPROGRAM), which produces state-selected
-    kinetic rate coefficients from cross sections behaving as 1/E (E being electron energy)
-    at the E=0 threshold.
+        Wrapper for my julia script (\$JPROGRAM), which produces state-selected
+        kinetic rate coefficients from cross sections behaving as 1/E (E being electron energy)
+        at the E=0 threshold.
 
-    usage: thermal [operation] [operand]
+        usage: thermal [operation] [operand]
 
-    operations:               operand:   function:
+        operations:               operand:   function:
 
-        -h                    none       show this message.
-        -i,--input            file       specify input  file
-        -o,--output           file       specify output file
-        --logx                none       if supplied, a logarithmic grid will be used.
-        --Ti                  float      lowest  kinetic temperature (K)
-        --Tf                  float      highest kinetic temperature (K)
-        --nT                  integer    number of kinetic temperatures
-        --input-xs-units      string     the unit type of the input data   (e.g., "cm" for cm^2).
-                                         Output rates will be in these units ^3 / s
-        --input-energy-units  string     the unit type of the input energy (e.g., "eV" for electron volts).
-        --extrap              none       extrapolate cross sections to E = 0 threshold assuming 1/E behavior ? Otherwise,
-                                         assume it is zero.
-        --electron-energy-min float      lowest electron energy (should be closer to 0 than the lowest available point)
-        --num-extrap-energies integer    number of extrapolation energies (extrapolating to 0)
+            -h                    none       show this message.
+            -i,--input            file       specify input  file
+            -o,--output           file       specify output file
+            --logx                none       if supplied, a logarithmic grid will be used.
+            --Ti                  float      lowest  kinetic temperature (K)
+            --Tf                  float      highest kinetic temperature (K)
+            --nT                  integer    number of kinetic temperatures
+            --input-xs-units      string     the unit type of the input data   (e.g., "cm" for cm^2).
+                                             Output rates will be in these units ^3 / s
+            --input-energy-units  string     the unit type of the input energy (e.g., "eV" for electron volts).
+            --extrap              none       extrapolate cross sections to E = 0 threshold assuming 1/E behavior ? Otherwise,
+                                             assume it is zero.
+            --electron-energy-min float      lowest electron energy (should be closer to 0 than the lowest available point)
+            --num-extrap-energies integer    number of extrapolation energies (extrapolating to 0)
 
-    The following would be a valid implementation of thermal :
+        The following would be a valid implementation of thermal :
 
-        thermal -i data_to_convolve.dat -o convolved_data.dat \
-                  --logx \
-                  --Ti=1e-6 \
-                  --Tf=1e3 \
-                  --extrap \
-                  --electron-energy-min=1e-8 \
-                  --num-extrap-energies=1000 \
-                  --nT=500 \
-                  --input-xs-units=cm \
-                  --input-energy-units=eV
+            thermal -i data_to_convolve.dat -o convolved_data.dat \
+                      --logx \
+                      --Ti=1e-6 \
+                      --Tf=1e3 \
+                      --extrap \
+                      --electron-energy-min=1e-8 \
+                      --num-extrap-energies=1000 \
+                      --nT=500 \
+                      --input-xs-units=cm \
+                      --input-energy-units=eV
 
-    Input file: a file of electron energies (Eel) and cross sections (σ)
-    in any units of energy and length^2, formatted as
+        Input file: a file of electron energies (Eel) and cross sections (σ)
+        in any units of energy and length^2, formatted as
 
-      Eel  σ
-       .   .
-       .   .
-       .   .
+          Eel  σ
+           .   .
+           .   .
+           .   .
 
-    Output file: a file of temperatures (T) in K and rate coefficients (α) in cm^3/s, formatted as
+        Output file: a file of temperatures (T) in K and rate coefficients (α) in cm^3/s, formatted as
 
-      T  α
-      .  .
-      .  .
-      .  .
+          T  α
+          .  .
+          .  .
+          .  .
 
 
 ## Fitting interatomic / intermolecular potentials
@@ -201,33 +201,33 @@ A decent guess for $E_{\text{diss}}$ should be supplied, otherwise the least squ
 
 ### Using `morseFit`.
 
-morseFit
+    morseFit
 
-    Wrapper for my julia script located at (\$JPROGRAM)
+        Wrapper for my julia script located at (\$JPROGRAM)
 
-    usage: morseFit [operation] [operand]
+        usage: morseFit [operation] [operand]
 
-    operations:                 operand:        function:
+        operations:                 operand:        function:
 
-        -h                      none            show this message.
-        -i,--input              file            specify input  file
-        -o,--output             file            specify output file
-        --tailonly              none            if specified, only fit the tail of the potentil
-        --rcut                  number          cutoff   distance for fitting only the potential tail
-        --rmin                  number          smallest distance for the fit. Ignored if --tailonly is supplied
-        --rmax                  number          largest  distance for the fit
-        --rstep                 number          linear step size  for the fit
-        -a                      number          initial guess for the 'a'  parameter in the Morse potetial controlling the well width
-        -r0                     number          initial guess for the 'r0' parameter in the Morse potetial controlling the location of the well minimum
-        -D                      number          initial guess for the 'D'  parameter in the Morse potetial controlling the well depth
-        --dissociation-limit    number          initial guess for the absolute value of the the dissociation limit (assumed to be negative) of the potential.
-        --positive-dissoc-limit none            if specified, the dissociation limit is taken to have a positive value
-        --print-parameters      none            if specified, print the fit parameters
+            -h                      none            show this message.
+            -i,--input              file            specify input  file
+            -o,--output             file            specify output file
+            --tailonly              none            if specified, only fit the tail of the potentil
+            --rcut                  number          cutoff   distance for fitting only the potential tail
+            --rmin                  number          smallest distance for the fit. Ignored if --tailonly is supplied
+            --rmax                  number          largest  distance for the fit
+            --rstep                 number          linear step size  for the fit
+            -a                      number          initial guess for the 'a'  parameter in the Morse potetial controlling the well width
+            -r0                     number          initial guess for the 'r0' parameter in the Morse potetial controlling the location of the well minimum
+            -D                      number          initial guess for the 'D'  parameter in the Morse potetial controlling the well depth
+            --dissociation-limit    number          initial guess for the absolute value of the the dissociation limit (assumed to be negative) of the potential.
+            --positive-dissoc-limit none            if specified, the dissociation limit is taken to have a positive value
+            --print-parameters      none            if specified, print the fit parameters
 
 
-    The following is a valid implementation of morseFit :
+        The following is a valid implementation of morseFit :
 
-        morseFit -i input.dat -o output.dat --tailonly --rcut=2.6 --rstep=0.01 --rmax=10 --dissociation-limit 75 --positive-dissoc-limit
+            morseFit -i input.dat -o output.dat --tailonly --rcut=2.6 --rstep=0.01 --rmax=10 --dissociation-limit 75 --positive-dissoc-limit
 
 For a full fit:
 `morseFit -i input.dat -o output.dat --rmin=0.8 --rstep=0.01 --rmax=10 --dissociation-limit 75 --positive-dissoc-limit`
