@@ -156,6 +156,16 @@ main() {
 				a="${1#*=}"
 				;;
 
+			-r0)
+				[ "$2" ] && r0="${2}" && shift || die 'ERROR: "-r0" requires a non-empty option argument.'
+				;;
+			-r0=)
+				die 'ERROR: "-r0" requires a non-empty argument.'
+				;;
+			-r0=?*)
+				r0="${1#*=}"
+				;;
+
 			-D)
 				[ "$2" ] && D="${2}" && shift || die 'ERROR: "-D" requires a non-empty option argument.'
 				;;
@@ -211,7 +221,7 @@ main() {
   if [ "${tailOnly}" == "true" ] ; then
 
     [ "${headOnly}" == "true" ] && echo "--headonly and --tailonly cannot both be supplied" && flag=true
-    [ -z "${rcut}" ] && echo "Need to provide a cutoff distance (--rcut) if you only want to fit the potential tail" && flag=true
+    [ -z "${rcut}" ] && echo "Need to provide a cutoff distance (--rcut) if you only want to fit the potential head" && flag=true
     [ -z "${rmax}" ] && echo "Need a maximum distance (--rmax)" 1>&2 && flag=true
     rmin=0.0
 
