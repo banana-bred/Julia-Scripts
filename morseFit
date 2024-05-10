@@ -221,14 +221,14 @@ main() {
   if [ "${tailOnly}" == "true" ] ; then
 
     [ "${headOnly}" == "true" ] && echo "--headonly and --tailonly cannot both be supplied" && flag=true
-    [ -z "${rcut}" ] && echo "Need to provide a cutoff distance (--rcut) if you only want to fit the potential head" && flag=true
+    [ -z "${rcut}" ] && echo "Need to provide a cutoff distance (--rcut) if you only want to fit the potential tail" && flag=true
     [ -z "${rmax}" ] && echo "Need a maximum distance (--rmax)" 1>&2 && flag=true
     rmin=0.0
 
   elif [ "${headOnly}" == "true" ] ; then
 
-    [ -z "${rcut}" ] && echo "Need to provide a cutoff distance (--rcut) if you only want to fit the potential tail" && flag=true
-    [ -z "${rmin}" ] && echo "Need to provide a minimum distance (--rmin) if you want to fit the whole potential" && flag=true
+    [ -z "${rcut}" ] && echo "Need to provide a cutoff distance (--rcut) if you only want to fit the potential head" && flag=true
+    [ -z "${rmin}" ] && echo "Need to provide a minimum distance (--rmin) if you want to fit the potential head" && flag=true
     rmax=0.0
 
   else
