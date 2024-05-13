@@ -20,10 +20,10 @@ $PROGRAM
         -o,--output             file            specify output file
         --tailonly              none            if specified, only fit the tail (large r) of the potential
         --headonly              none            if specified, only fit the head (small r) of the potential
-        --rcut                  number          cutoff   distance for fitting only the potential tail
-        --rmin                  number          smallest distance for the fit. Ignored if --tailonly is supplied
-        --rmax                  number          largest  distance for the fit
-        --rstep                 number          linear step size  for the fit
+        --rcut                  number          cutoff   distance for the fit input, only used if fitting just the potential head/tail
+        --rmin                  number          smallest distance for the fit output. Ignored if --tailonly is supplied
+        --rmax                  number          largest  distance for the fit output
+        --rstep                 number          linear step size  for the fit output
         -a                      number          initial guess for the 'a'  parameter in the Morse potetial controlling the well width
         -r0                     number          initial guess for the 'r0' parameter in the Morse potetial controlling the location of the well minimum
         -D                      number          initial guess for the 'D'  parameter in the Morse potetial controlling the well depth
