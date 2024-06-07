@@ -53,16 +53,16 @@ function main()
 
   datafile     = ARGS[1]
   outfile      = ARGS[2]
-  Ti           = parse(Float64,ARGS[3]) # <--- lowest  temperature for kinetics data
-  Tf           = parse(Float64,ARGS[4]) # <--- highest temperature for kinetics data
-  EelMin       = parse(Float64,ARGS[5]) # <--- lowest electron energy to which cross sections are
-                                        #    | extrapolated for the integral over electron energies.
-                                        #    | Useful for integrating near 0 where the cross sections
-                                        #    | have a simple 1/E behavior.
-  numExtrap    = parse(Int,ARGS[6]) # <------- number of extrapolated grid points
-  nT           = parse(Int,ARGS[7]) # <------- number of grid points
-  logx         = parse(Bool,ARGS[8]) # <------ T: logarithmic convolution grid
-  extrap       = parse(Bool,ARGS[9]) # <------ T: logarithmic convolution grid
+  Ti           = parse(Float64,ARGS[3])  # <--- lowest  temperature for kinetics data
+  Tf           = parse(Float64,ARGS[4])  # <--- highest temperature for kinetics data
+  EelMin       = parse(Float64,ARGS[5])  # <--- lowest electron energy to which cross sections are
+                                         # | extrapolated for the integral over electron energies.
+                                         # | Useful for integrating near 0 where the cross sections
+                                         # | have a simple 1/E behavior.
+  numExtrap    = parse(Int,ARGS[6])      # <------- number of extrapolated grid points
+  nT           = parse(Int,ARGS[7])      # <------- number of grid points
+  logx         = parse(Bool,ARGS[8])     # <------ T: logarithmic convolution grid
+  extrap       = parse(Bool,ARGS[9])     # <------ T: logarithmic convolution grid
   xsConversion = parse(Float64,ARGS[10]) # <-- : conversion factor supplied by wrapper to get energy in hartree atomic units
   EConversion  = parse(Float64,ARGS[11]) # <-- : conversion factor supplied by wrapper to get cross sections in bohr^2
 
