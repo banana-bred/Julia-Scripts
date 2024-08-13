@@ -9,7 +9,7 @@ usage() {
 
 $PROGRAM
 
-    Wrapper for my julia script located at : "${JPROGRAM}"
+    Wrapper for my julia script located at : "${JPROGRAM}" (\$JULIABIN)
 
     usage: ${PROGRAM} [operation] [operand]
 
