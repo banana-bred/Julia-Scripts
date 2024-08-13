@@ -83,13 +83,10 @@ end
 
 infile   = ARGS[1]                 # -- name of the input file containing the potential data
 outfile  = ARGS[2]                 # -- name of the output file
-kx       = parse(Float64, ARGS[3]) # -- the order of the interpolating splines
-xi       = parse(Float64, ARGS[4])  # -- the smallest value for the grid over which data will be interpolated
-xf       = parse(Float64, ARGS[5])  # -- the largest value for the grid over which data will be interpolated
-nx       = parse(Float64, ARGS[6]) # -- the number of points in the grid over which data will be interpolated
+kx       = parse(Int, ARGS[3])     # -- the order of the interpolating splines
+xi       = parse(Float64, ARGS[4]) # -- the smallest value for the grid over which data will be interpolated
+xf       = parse(Float64, ARGS[5]) # -- the largest value for the grid over which data will be interpolated
+nx       = parse(Int, ARGS[6])     # -- the number of points in the grid over which data will be interpolated
 logx     = parse(Bool, ARGS[7])    # -- is the interpolation grid logaritmic ?
-
-kx = Integer(kx)
-nx = Integer(nx)
 
 main(infile, outfile, kx, xi, xf, nx, logx)
