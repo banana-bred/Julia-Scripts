@@ -35,17 +35,18 @@ function logrange(xi :: Number, xf :: Number, nx :: Integer)
 end
 
 function main(
-        infile  :: String,
-        outfile :: String,
-        kx      :: Integer,
-        xi      :: Number,
-        xf      :: Number,
-        nx      :: Integer,
-        logx    :: Bool
+        infile       :: String,
+        outfile      :: String,
+        kx           :: Integer,
+        xi           :: Number,
+        xf           :: Number,
+        nx           :: Integer,
+        logx         :: Bool,
+        comment_char :: Char
     )
 
     # -- read data into x and y arrays
-    data   = readdlm(infile)
+    data   = readdlm(infile, comments = true, comment_char = comment_char)
     _, ny = size(data)
     xdata  = data[:,1]
     ydata  = data[:,2:ny]
@@ -73,7 +74,7 @@ end # fuction main
 ######################### EXECUTION ##############################
 ##################################################################
 
-const nargs = 7
+const nargs = 8
 
 if(size(ARGS, 1) != nargs)
     println(f"STOP: {PROGRAM} requires {nargs} arguments, but {string(size(ARGS, 1))} were supplied.")
@@ -81,12 +82,13 @@ if(size(ARGS, 1) != nargs)
     exit()
 end
 
-infile   = ARGS[1]                 # -- name of the input file containing the potential data
-outfile  = ARGS[2]                 # -- name of the output file
-kx       = parse(Int, ARGS[3])     # -- the order of the interpolating splines
-xi       = parse(Float64, ARGS[4]) # -- the smallest value for the grid over which data will be interpolated
-xf       = parse(Float64, ARGS[5]) # -- the largest value for the grid over which data will be interpolated
-nx       = parse(Int, ARGS[6])     # -- the number of points in the grid over which data will be interpolated
-logx     = parse(Bool, ARGS[7])    # -- is the interpolation grid logaritmic ?
+infile       = ARGS[1]                 # <-- : name of the input file containing the potential data
+outfile      = ARGS[2]                 # <-- : name of the output file
+kx           = parse(Int, ARGS[3])     # <-- : the order of the interpolating splines
+xi           = parse(Float64, ARGS[4]) # <-- : the smallest value for the grid over which data will be interpolated
+xf           = parse(Float64, ARGS[5]) # <-- : the largest value for the grid over which data will be interpolated
+nx           = parse(Int, ARGS[6])     # <-- : the number of points in the grid over which data will be interpolated
+logx         = parse(Bool, ARGS[7])    # <-- : is the interpolation grid logaritmic ?
+comment_char = only(ARGS[8])           # <-- : the comment character for the readdlm operation
 
-main(infile, outfile, kx, xi, xf, nx, logx)
+main(infile, outfile, kx, xi, xf, nx, logx, comment_char)
