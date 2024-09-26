@@ -31,6 +31,7 @@ $PROGRAM
                                          assume it is zero.
         --electron-energy-min float      lowest electron energy (should be closer to 0 than the lowest available point)
         --num-extrap-energies integer    number of extrapolation energies (extrapolating to 0)
+        --comment-char        character  the character that denotes a line comment in the file. default: '#'
 
     The following would be a valid implementation of ${PROGRAM} :
 
@@ -86,6 +87,7 @@ main() {
 
   logx="false"
   extrap="false"
+  comment="#"
 
 	while :; do
 		case $1 in
@@ -188,6 +190,16 @@ main() {
 				inputEUnits="${1#*=}"
 				;;
 
+			--comment-char )
+				[ "$2" ] && comment="${2}" && shift || die 'ERROR: "--comment-char" requires a non-empty option argument.'
+				;;
+			--comment-char=)
+				die 'ERROR: "--comment-char" requires a non-empty argument.'
+				;;
+			--input-energy-units=?*)
+				comment="${1#*=}"
+				;;
+
       --extrap)
         extrap="true"
         ;;
@@ -226,7 +238,7 @@ main() {
   xsConversion="$(units 1 "$inputXSUnits" bohr)"
   EConversion="$(units 1 "$inputEUnits" hartree)"
 
-  julia "$JPROGRAM" "$input" "$output" "$Ti" "$Tf" "$electronEnergyMin" "$numExtrapE" "$nT" "$logx" "$extrap" "$xsConversion" "$EConversion"
+  julia "$JPROGRAM" "$input" "$output" "$Ti" "$Tf" "$electronEnergyMin" "$numExtrapE" "$nT" "$logx" "$extrap" "$xsConversion" "$EConversion" "$comment"
 
 }
 

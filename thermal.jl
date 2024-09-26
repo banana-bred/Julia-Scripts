@@ -43,7 +43,7 @@ end
 
 function main()
 
-  narg = 11
+  narg = 12
 
   if(size(ARGS,1) != narg)
     println("STOP: ",PROGRAM," requires ",narg," arguments, but ",string(size(ARGS,1))," were supplied.")
@@ -65,6 +65,7 @@ function main()
   extrap       = parse(Bool,ARGS[9])     # <------ T: logarithmic convolution grid
   xsConversion = parse(Float64,ARGS[10]) # <-- : conversion factor supplied by wrapper to get energy in hartree atomic units
   EConversion  = parse(Float64,ARGS[11]) # <-- : conversion factor supplied by wrapper to get cross sections in bohr^2
+  comment_char = only(ARGS[12])          # <-- : convert string to character
 
   # -- check if input datafile exists
   if( ! isfile(datafile) )
@@ -74,7 +75,7 @@ function main()
   end
 
   # -- assumes x y format, one y column (for now)
-  data  = readdlm(datafile)
+  data  = readdlm(datafile, comments = true, comment_char = comment_char)
   xdata = data[:,1] * EConversion
   ydata = data[:,2] * xsConversion ^ 2
 
