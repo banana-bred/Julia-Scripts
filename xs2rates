@@ -1,7 +1,7 @@
 #!/bin/sh
 
 PROGRAM="$(basename "$0")"
-JPROGRAM="${JULIABIN}/xs2rates.jl"
+JPROGRAM="${JULIABIN}/${PROGRAM}.jl"
 
 usage() {
 
